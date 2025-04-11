@@ -17,8 +17,8 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMovies(movies: List<MovieEntity>)
 
-    @Update
-    fun updateFavorite(movie: MovieEntity)
+    @Query("UPDATE movies SET isFavorite = :isFavorite WHERE id = :movieId")
+    fun updateFavorite(movieId: Int, isFavorite: Boolean)
 
     @Query("SELECT * FROM movies WHERE isFavorite = 1 ORDER BY voteAverage DESC")
     fun getFavoriteMovies(): Flow<List<MovieEntity>>
