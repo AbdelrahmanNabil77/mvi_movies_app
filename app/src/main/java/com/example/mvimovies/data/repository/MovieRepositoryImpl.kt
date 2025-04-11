@@ -1,5 +1,6 @@
 package com.example.mvimovies.data.repository
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -15,6 +16,8 @@ import androidx.paging.map
 import com.example.mvimovies.data.local.database.MovieDatabase
 import com.example.mvimovies.data.local.entity.MovieEntity
 import com.example.mvimovies.utils.Extensions.toMovie
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
@@ -40,7 +43,9 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateFavorite(movieId: Int, isFavorite: Boolean) {
-        dao.updateFavorite(movieId= movieId, isFavorite= isFavorite)
+        withContext(Dispatchers.IO){
+            dao.updateFavorite(movieId= movieId, isFavorite= isFavorite)
+        }
     }
 
     override fun getFavoriteMovies(): Flow<List<Movie>> {

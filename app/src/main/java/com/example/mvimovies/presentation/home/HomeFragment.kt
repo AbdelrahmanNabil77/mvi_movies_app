@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
                 viewModel.processIntent(HomeIntent.UpdateFavorite(movieId, isFavorite))
             },
             onScrollPositionChanged = { position ->
-                viewModel.processIntent(HomeIntent.UpdateScrollPosition(position))
+//                viewModel.processIntent(HomeIntent.UpdateScrollPosition(position))
             }
         )
 

@@ -1,5 +1,6 @@
 package com.example.mvimovies.presentation.home
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -17,7 +18,7 @@ class HomeAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position)?.let { movie ->
             holder.bind(movie)
-            onScrollPositionChanged(position)
+//            onScrollPositionChanged(position)
         }
     }
 

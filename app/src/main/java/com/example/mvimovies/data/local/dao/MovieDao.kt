@@ -14,7 +14,7 @@ interface MovieDao {
     @Query("SELECT * FROM movies ORDER BY remotePage ASC")
     fun getMovies(): PagingSource<Int, MovieEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insertMovies(movies: List<MovieEntity>)
 
     @Query("UPDATE movies SET isFavorite = :isFavorite WHERE id = :movieId")
@@ -25,4 +25,7 @@ interface MovieDao {
 
     @Query("DELETE FROM movies")
     fun clearAll()
+
+    @Query("SELECT * FROM movies")
+    suspend fun getMoviesRaw(): List<MovieEntity>
 }

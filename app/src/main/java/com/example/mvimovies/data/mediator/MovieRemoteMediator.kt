@@ -47,10 +47,19 @@ class MovieRemoteMediator @Inject constructor(
             )
 
             database.withTransaction {
-                // Clear cache for refresh
-                if (loadType == LoadType.REFRESH) {
-                    dao.clearAll()
-                }
+
+//                // Merge with existing favorites
+//                val existingMovies = dao.getMoviesRaw()
+//                val mergedMovies = response.results.map { dto ->
+//                    val movie = existingMovies.find{it.id == 324544}
+//                    existingMovies.find { it.id == dto.id }?.copy(
+//                        title = dto.title,
+//                        overview = dto.overview,
+//                        posterPath = dto.posterPath,
+//                        remotePage = page
+//                    ) ?: dto.toEntity(remotePage = page)
+//                }
+//                dao.insertMovies(mergedMovies)
 
                 // Insert new movies with page number
                 dao.insertMovies(
