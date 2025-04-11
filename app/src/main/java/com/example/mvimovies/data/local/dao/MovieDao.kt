@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
-    @Query("SELECT * FROM movies ORDER BY voteAverage DESC")
+    @Query("SELECT * FROM movies ORDER BY remotePage ASC")
     fun getMovies(): PagingSource<Int, MovieEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -22,4 +22,7 @@ interface MovieDao {
 
     @Query("SELECT * FROM movies WHERE isFavorite = 1 ORDER BY voteAverage DESC")
     fun getFavoriteMovies(): Flow<List<MovieEntity>>
+
+    @Query("DELETE FROM movies")
+    fun clearAll()
 }

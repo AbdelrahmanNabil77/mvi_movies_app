@@ -12,6 +12,7 @@ import com.example.mvimovies.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import androidx.paging.map
+import com.example.mvimovies.data.local.database.MovieDatabase
 import com.example.mvimovies.data.local.entity.MovieEntity
 import com.example.mvimovies.utils.Extensions.toMovie
 import javax.inject.Inject
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class MovieRepositoryImpl @Inject constructor(
     private val api: MovieApiService,
     private val dao: MovieDao,
+    private val movieDatabase: MovieDatabase,
     private val apiKey: String
 ) : MovieRepository {
 
@@ -27,9 +29,10 @@ class MovieRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
+                prefetchDistance=5,
                 enablePlaceholders = false
             ),
-            remoteMediator = MovieRemoteMediator(api, dao, apiKey),
+            remoteMediator = MovieRemoteMediator(api, movieDatabase, apiKey),
             pagingSourceFactory = { dao.getMovies() }
         ).flow.map { pagingData ->
             pagingData.map { it.toMovie() }

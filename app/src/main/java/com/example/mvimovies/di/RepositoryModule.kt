@@ -2,6 +2,7 @@ package com.example.mvimovies.di
 
 import com.example.mvimovies.BuildConfig
 import com.example.mvimovies.data.local.dao.MovieDao
+import com.example.mvimovies.data.local.database.MovieDatabase
 import com.example.mvimovies.data.remote.api.MovieApiService
 import com.example.mvimovies.data.repository.MovieRepositoryImpl
 import com.example.mvimovies.domain.repository.MovieRepository
@@ -19,8 +20,12 @@ object RepositoryModule {
     @Singleton
     fun provideMovieRepository(
         api: MovieApiService,
+        movieDatabase: MovieDatabase,
         dao: MovieDao
     ): MovieRepository {
-        return MovieRepositoryImpl(api, dao, BuildConfig.TMDB_API_KEY)
+        return MovieRepositoryImpl(api = api,
+            dao = dao,
+            movieDatabase = movieDatabase,
+            apiKey = BuildConfig.TMDB_API_KEY)
     }
 }
