@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mvimovies.R
 import com.example.mvimovies.databinding.FragmentFavoriteBinding
@@ -39,9 +40,16 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = FavoriteAdapter { movieId ->
-            viewModel.processIntent(FavoriteIntent.RemoveFavorite(movieId))
-        }
+        adapter = FavoriteAdapter(
+            onRemoveClick = { movieId ->
+                viewModel.processIntent(FavoriteIntent.RemoveFavorite(movieId))
+            },
+            onMovieClick = { movie ->
+                val action =
+                    FavoriteFragmentDirections.actionNavigationFavoriteToDetailsFragment(movie)
+                findNavController().navigate(action)
+            }
+        )
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -58,7 +66,7 @@ class FavoriteFragment : Fragment() {
                         is FavoriteState.Loading -> showLoading()
                         is FavoriteState.Error -> showError(state.message)
                         is FavoriteState.Empty -> showEmpty()
-                        else->{}
+                        else -> {}
                     }
                 }
             }

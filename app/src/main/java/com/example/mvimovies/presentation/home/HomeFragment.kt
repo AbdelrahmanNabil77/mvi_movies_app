@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mvimovies.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,6 +46,10 @@ class HomeFragment : Fragment() {
             },
             onScrollPositionChanged = { position ->
 //                viewModel.processIntent(HomeIntent.UpdateScrollPosition(position))
+            },
+            onMovieClick = { movie ->
+                val action = HomeFragmentDirections.actionNavigationHomeToDetailsFragment(movie)
+                findNavController().navigate(action)
             }
         )
 

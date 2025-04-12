@@ -12,6 +12,7 @@ import com.example.mvimovies.domain.model.Movie
 
 class HomeAdapter(
     private val onFavoriteClick: (Int, Boolean) -> Unit,
+    private val onMovieClick: (Movie) -> Unit,
     private val onScrollPositionChanged: (Int) -> Unit
 ) : PagingDataAdapter<Movie, HomeAdapter.ViewHolder>(MovieDiffCallback) {
 
@@ -35,6 +36,10 @@ class HomeAdapter(
                 favoriteButton.setOnClickListener {
                     val isFavorite = movie.isFavorite?:false
                     onFavoriteClick(movie.id?:0, !isFavorite)
+                }
+
+                itemView.setOnClickListener {
+                    onMovieClick(movie)
                 }
             }
         }

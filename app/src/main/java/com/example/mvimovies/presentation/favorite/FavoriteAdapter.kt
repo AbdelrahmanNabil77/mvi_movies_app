@@ -10,7 +10,8 @@ import com.example.mvimovies.databinding.ItemMovieBinding
 import com.example.mvimovies.domain.model.Movie
 
 class FavoriteAdapter(
-    private val onRemoveClick: (Int) -> Unit
+    private val onRemoveClick: (Int) -> Unit,
+    private val onMovieClick: (Movie) -> Unit
 ) : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
 
     private val movies = mutableListOf<Movie>()
@@ -28,6 +29,9 @@ class FavoriteAdapter(
 
                 favoriteButton.apply {
                     setOnClickListener { onRemoveClick(movie.id?:0) }
+                }
+                itemView.setOnClickListener {
+                    onMovieClick(movie)
                 }
                 }
             }
