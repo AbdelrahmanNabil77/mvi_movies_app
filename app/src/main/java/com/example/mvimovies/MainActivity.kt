@@ -1,6 +1,7 @@
 package com.example.mvimovies
 
 import android.os.Bundle
+import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -37,5 +38,17 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    fun hideNavBar(){
+        if (this::binding.isInitialized) {
+            binding.navView.visibility = View.GONE
+        }
+    }
+
+    fun showNavBar(){
+        if (this::binding.isInitialized) {
+            binding.navView.visibility = View.VISIBLE
+        }
     }
 }

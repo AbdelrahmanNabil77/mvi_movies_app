@@ -1,14 +1,17 @@
 package com.example.mvimovies.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.example.mvimovies.domain.usecase.GetMoviesUseCase
 import com.example.mvimovies.domain.usecase.UpdateFavoriteUseCase
 import com.example.mvimovies.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,9 +23,9 @@ class HomeViewModel @Inject constructor(
 
     private var scrollPosition = 0
 
-    init {
-        processIntent(HomeIntent.LoadMovies)
-    }
+//    init {
+//        processIntent(HomeIntent.LoadMovies)
+//    }
 
     override fun processIntent(intent: HomeIntent) {
         when (intent) {
@@ -39,8 +42,7 @@ class HomeViewModel @Inject constructor(
                 .cachedIn(viewModelScope)
 
             setState(HomeState.Success(
-                movies = movies,
-                scrollPosition = scrollPosition
+                movies = movies
             ))
         } catch (e: Exception) {
             setState(HomeState.Error(e.message ?: "Unknown error"))
@@ -49,9 +51,7 @@ class HomeViewModel @Inject constructor(
 
     private fun updateScrollPosition(position: Int) {
         scrollPosition = position
-        (state.value as? HomeState.Success)?.let {
-            setState(it.copy(scrollPosition = position))
-        }
+
     }
 
     private fun updateFavorite(movieId: Int, isFavorite: Boolean) {

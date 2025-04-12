@@ -9,8 +9,7 @@ sealed class HomeState : BaseState {
     data object Idle : HomeState()
     data object Loading : HomeState()
     data class Success(
-        val movies: Flow<PagingData<Movie>>,
-        val scrollPosition: Int = 0
+        val movies: Flow<PagingData<Movie>>
     ) : HomeState()
     data class Error(val message: String) : HomeState()
 }

@@ -3,7 +3,6 @@ package com.example.mvimovies.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-// MovieEntity.kt
 @Entity(tableName = "movies")
 data class MovieEntity(
     @PrimaryKey val id: Int?,
@@ -13,5 +12,6 @@ data class MovieEntity(
     val isFavorite: Boolean = false,
     val releaseDate: String?,
     val voteAverage: Double?,
-    val remotePage: Int? = null
+    val remotePage: Int? = null,
+    var genreIds: ArrayList<Int>? = null,
 )

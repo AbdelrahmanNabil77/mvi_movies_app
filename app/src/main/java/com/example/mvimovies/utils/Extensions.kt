@@ -13,7 +13,8 @@ object Extensions {
         posterPath = posterPath,
         releaseDate = releaseDate,
         voteAverage = voteAverage,
-        remotePage = remotePage
+        remotePage = remotePage,
+        genreIds = genreIds
     )
 
     fun MovieEntity.toMovie(): Movie = Movie(
@@ -23,6 +24,7 @@ object Extensions {
         posterPath = posterPath,
         isFavorite = isFavorite,
         releaseDate = releaseDate,
-        voteAverage = voteAverage
+        voteAverage = voteAverage,
+        genreIds = genreIds
     )
 }

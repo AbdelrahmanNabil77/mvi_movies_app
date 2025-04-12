@@ -9,7 +9,7 @@ data class MovieDto(
     @SerializedName("backdrop_path")
     var backdropPath: String? = null,
     @SerializedName("genre_ids")
-    var genreIds: ArrayList<Int> = arrayListOf(),
+    var genreIds: ArrayList<Int>? = null,
     @SerializedName("id")
     var id: Int? = null,
     @SerializedName("original_language")

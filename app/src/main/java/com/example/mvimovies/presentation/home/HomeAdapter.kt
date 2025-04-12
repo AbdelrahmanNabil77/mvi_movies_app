@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.example.mvimovies.databinding.ItemMovieBinding
 import com.example.mvimovies.domain.model.Movie
@@ -13,13 +14,11 @@ import com.example.mvimovies.domain.model.Movie
 class HomeAdapter(
     private val onFavoriteClick: (Int, Boolean) -> Unit,
     private val onMovieClick: (Movie) -> Unit,
-    private val onScrollPositionChanged: (Int) -> Unit
 ) : PagingDataAdapter<Movie, HomeAdapter.ViewHolder>(MovieDiffCallback) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position)?.let { movie ->
             holder.bind(movie)
-//            onScrollPositionChanged(position)
         }
     }
 
@@ -27,21 +26,26 @@ class HomeAdapter(
         fun bind(movie: Movie) {
             binding.apply {
                 title.text = movie.title
-                overview.text = movie.overview
+                overview.text = movie.releaseDate
                 Glide.with(itemView)
                     .load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
                     .into(poster)
-                favoriteButton.isChecked = movie.isFavorite?:false
+                if (movie.isFavorite == false) {
+                    favoriteButton.setBackgroundResource(com.example.mvimovies.R.drawable.ic_border_favorite)
+                } else {
+                    favoriteButton.setBackgroundResource(com.example.mvimovies.R.drawable.ic_solid_red_heart)
+                }
 
                 favoriteButton.setOnClickListener {
-                    val isFavorite = movie.isFavorite?:false
-                    onFavoriteClick(movie.id?:0, !isFavorite)
+                    val isFavorite = movie.isFavorite ?: false
+                    onFavoriteClick(movie.id ?: 0, !isFavorite)
                 }
 
                 itemView.setOnClickListener {
                     onMovieClick(movie)
                 }
             }
+
         }
     }
 

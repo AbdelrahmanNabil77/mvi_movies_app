@@ -1,5 +1,6 @@
 package com.example.mvimovies.data.mediator
 
+import android.annotation.SuppressLint
 import android.net.http.HttpException
 import android.util.Log
 import androidx.paging.ExperimentalPagingApi
@@ -25,6 +26,7 @@ class MovieRemoteMediator @Inject constructor(
 
     private val dao get() = database.movieDao()
 
+    @SuppressLint("NewApi")
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, MovieEntity>
@@ -47,35 +49,45 @@ class MovieRemoteMediator @Inject constructor(
             )
 
             database.withTransaction {
+                    // Merge with existing favorites
+                    val existingMovies = dao.getMoviesRaw()
+                if (response.isSuccessful){
+                    response.body()?.let {
+                        val mergedMovies = it.results.map { dto ->
+                            val movie = existingMovies.find{it.id == 324544}
+                            existingMovies.find { it.id == dto.id }?.copy(
+                                title = dto.title,
+                                overview = dto.overview,
+                                posterPath = dto.posterPath,
+                                remotePage = page,
+                                genreIds = dto.genreIds
+                            ) ?: dto.toEntity(remotePage = page)
+                        }
+                        dao.insertMovies(mergedMovies)
 
-//                // Merge with existing favorites
-//                val existingMovies = dao.getMoviesRaw()
-//                val mergedMovies = response.results.map { dto ->
-//                    val movie = existingMovies.find{it.id == 324544}
-//                    existingMovies.find { it.id == dto.id }?.copy(
-//                        title = dto.title,
-//                        overview = dto.overview,
-//                        posterPath = dto.posterPath,
-//                        remotePage = page
-//                    ) ?: dto.toEntity(remotePage = page)
-//                }
-//                dao.insertMovies(mergedMovies)
+                    }
+                }else if(!response.isSuccessful && existingMovies.isEmpty()){
+                    throw Exception(response.errorBody()?.string())
+                } else {
+                    dao.insertMovies(existingMovies)
+                }
 
                 // Insert new movies with page number
-                dao.insertMovies(
-                    response.results.map {
-                        it.toEntity(remotePage = page)
-                    }
-                )
+//                dao.insertMovies(
+//                    response.results.map {
+//                        it.toEntity(remotePage = page)
+//                    }
+//                )
             }
             
             // Calculate end of pagination
-            val endOfPaginationReached = page >= response.totalPages!!
+            val endOfPaginationReached = page >= response?.body()?.totalPages?:0
 
             MediatorResult.Success(
                 endOfPaginationReached = endOfPaginationReached
             )
         } catch (e: Exception) {
+            Log.d("hitler", "error mediator ${e.message}")
             MediatorResult.Error(e)
         }
     }

@@ -9,5 +9,6 @@ data class Movie(
     val posterPath: String?,
     val isFavorite: Boolean?,
     val releaseDate: String?,
-    val voteAverage: Double?
+    val voteAverage: Double?,
+    var genreIds: ArrayList<Int>?,
 ):Serializable

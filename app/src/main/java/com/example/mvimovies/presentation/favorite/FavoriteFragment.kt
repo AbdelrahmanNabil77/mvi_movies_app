@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mvimovies.MainActivity
 import com.example.mvimovies.R
 import com.example.mvimovies.databinding.FragmentFavoriteBinding
 import com.example.mvimovies.domain.model.Movie
@@ -34,6 +35,8 @@ class FavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val mainActivity = requireActivity() as MainActivity
+        mainActivity.showNavBar()
         setupRecyclerView()
         observeState()
         viewModel.processIntent(FavoriteIntent.LoadFavorites)
@@ -59,7 +62,7 @@ class FavoriteFragment : Fragment() {
 
     private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.state.collect { state ->
                     when (state) {
                         is FavoriteState.Success -> showFavorites(state.movies)

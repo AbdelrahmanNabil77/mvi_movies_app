@@ -32,8 +32,8 @@ class MovieRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
-                prefetchDistance=5,
-                enablePlaceholders = false
+                initialLoadSize = 10,
+                prefetchDistance=0
             ),
             remoteMediator = MovieRemoteMediator(api, movieDatabase, apiKey),
             pagingSourceFactory = { dao.getMovies() }

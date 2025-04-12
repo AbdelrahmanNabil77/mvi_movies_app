@@ -20,8 +20,12 @@ class FavoriteAdapter(
         fun bind(movie: Movie) {
             binding.apply {
                 title.text = movie.title
-                overview.text = movie.overview
-                favoriteButton.isChecked = movie.isFavorite?:true
+                overview.text = movie.releaseDate
+                if(movie.isFavorite == false){
+                    favoriteButton.setBackgroundResource(com.example.mvimovies.R.drawable.ic_border_favorite)
+                }else{
+                    favoriteButton.setBackgroundResource(com.example.mvimovies.R.drawable.ic_solid_red_heart)
+                }
 
                 Glide.with(itemView)
                     .load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
