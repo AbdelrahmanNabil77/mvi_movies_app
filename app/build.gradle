@@ -19,14 +19,12 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        // Add this to read from local.properties
         def localProperties = new Properties()
         def localPropertiesFile = rootProject.file('local.properties')
         if (localPropertiesFile.exists()) {
             localProperties.load(new FileInputStream(localPropertiesFile))
         }
 
-        // Create BuildConfig field
         buildConfigField "String", "TMDB_API_KEY", "\"${localProperties['TMDB_API_KEY']}\""
     }
 
@@ -90,14 +88,4 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.15.1'
     kapt 'com.github.bumptech.glide:compiler:4.15.1'
 
-// Testing
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.mockito:mockito-core:5.3.1'
-    testImplementation 'org.mockito.kotlin:mockito-kotlin:4.1.0'
-    testImplementation 'androidx.arch.core:core-testing:2.2.0'
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
-    implementation "com.github.chuckerteam.chucker:library:3.5.2"
 }

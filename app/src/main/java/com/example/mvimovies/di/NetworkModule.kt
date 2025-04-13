@@ -1,7 +1,6 @@
 package com.example.mvimovies.di
 
 import android.content.Context
-import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.mvimovies.data.remote.api.MovieApiService
 import dagger.Module
 import dagger.Provides
@@ -22,7 +21,6 @@ object NetworkModule {
         @ApplicationContext context: Context
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(ChuckerInterceptor.Builder(context).build()) // <-- Add this
             .build()
     }
 
